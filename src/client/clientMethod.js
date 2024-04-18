@@ -231,7 +231,7 @@ class ClientMethod {
         if (media){
             await reqMethod.sendMedia(chatId, media.url, media.filling);
         }
-        if (isActive === 0 || comMod === 1 || type === 'Бухгалтерия' || type === 'Маркетинг' || type === 'Отдел продаж' || type ==='Car wash. Инструкции'
+       /* if (isActive === 0 || comMod === 1 || type === 'Бухгалтерия' || type === 'Маркетинг' || type === 'Отдел продаж' || type ==='Car wash. Инструкции'
             || type ==='Car wash. Обучение' || type === 'Яндекс Заправки. Отчет комитенту' || type === 'Яндекс Заправки. УПД') {
             await bot.sendMessage(chatId,
                 `Выберите свои действия:`, {
@@ -242,7 +242,7 @@ class ClientMethod {
                         ]
                     }
                 })
-        } else {
+        } else {*/
             await bot.sendMessage(chatId,
                 `Выберите свои действия:`, {
                     reply_markup: {
@@ -253,7 +253,7 @@ class ClientMethod {
                         ]
                     }
                 })
-        }
+        //}
     }
 
     //Вывод всех запросов клиента
