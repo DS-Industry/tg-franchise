@@ -155,12 +155,12 @@ class RequestMethod {
 
     //Дополнение к комментарию на стороне отвечающего
     async sendCommentAnswer(chatId, requestId, commentId, text, tgMethod, sender){
-        await tgMethod.sendMessageWithRetry(chatId, `<b>${sender} добавил комментарий к запросу ${requestId}:</b>\n <i>${text}</i>`);
-        const media = await this.searchMedia(commentId, "comment");
-        if (media) {
-            await this.sendMedia(chatId, media.url, media.filling);
-        }
         if(sender === 'Клиент') {
+            await tgMethod.sendMessageWithRetry(chatId, `<b>${sender} добавил комментарий к запросу ${requestId}:</b>\n <i>${text}</i>`);
+            const media = await this.searchMedia(commentId, "comment");
+            if (media) {
+                await this.sendMedia(chatId, media.url, media.filling);
+            }
             await bot.sendMessage(chatId,
                 `Нажмите, чтобы отправить ответ:`, {
                     reply_markup: {
@@ -172,6 +172,12 @@ class RequestMethod {
                     }
                 }
             )
+        } else {
+            await tgMethod.sendMessageWithRetry(chatId, text);
+            const media = await this.searchMedia(commentId, "comment");
+            if (media) {
+                await this.sendMedia(chatId, media.url, media.filling);
+            }
         }
     }
 

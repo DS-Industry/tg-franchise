@@ -8,22 +8,22 @@ class AdminMethod {
                 reply_markup: {
                     keyboard: [
                         [
-                            'Запросы по бухгалтерии',
-                            'Запросы по ЯЗ',
-                            'Запросы по договорам'
+                            'Бухгалтерия',
+                            'ЯЗ',
+                            'Договоры'
                         ],
                         [
-                            'Запросы отделу сервиса',
-                            'Запросы отделу продаж',
-                            'Запросы по CW'
+                            'Отдел сервиса',
+                            'Отдел продаж',
+                            'CW'
                         ],
                         [
-                            'Запросы по МП',
-                            'Запросы маркетингу',
-                            'Запросы службе поддержки'
+                            'МП',
+                            'Маркетинг',
+                            'Служба поддержки'
                         ],
                         [
-                            'Все активные запросы',
+                            'Активные запросы',
                             'Завершенные запросы',
                         ],
                         [
@@ -31,8 +31,7 @@ class AdminMethod {
                             'Добавить франшизу',
                         ],
                         [
-                            'Сделать рассылку франшизе',
-                            'Сделать рассылку всем'
+                            'Сделать рассылку'
                         ]
                     ],
                     resize_keyboard: true
@@ -159,7 +158,7 @@ class AdminMethod {
             const ids = requests.map(request => request.id).join(', ');
             await tgMethod.sendMessageWithRetry(chatId, `<i>Номера данных запросов: ${ids}</i>`);
         } else {
-            await tgMethod.sendMessageWithRetry(chatId, '<i>Таких запросов нету.</i>')
+            await tgMethod.sendMessageWithRetry(chatId, '<i>Таких запросов нет.</i>')
         }
     }
 
@@ -212,7 +211,7 @@ class AdminMethod {
                     }
                 }
             )
-        } else if(type === 'Бухгалтерия' || type === 'Маркетинг' || type === 'Отдел продаж' || type ==='Car wash. Инструкции'
+        }/* else if(type === 'Бухгалтерия' || type === 'Маркетинг' || type === 'Отдел продаж' || type ==='Car wash. Инструкции'
             || type ==='Car wash. Обучение' || type === 'Яндекс Заправки. Отчет комитенту' || type === 'Яндекс Заправки. УПД'){
             await bot.sendMessage(chatId,
                 `Выберите действие для запроса ${requestId}:`, {
@@ -225,12 +224,12 @@ class AdminMethod {
                     }
                 }
             )
-        } else {
+        }*/ else {
             await bot.sendMessage(chatId,
-                `Выберите действие для запроса ${requestId}:`, {
+                `Запрос ${requestId}:`, {
                     reply_markup: {
                         inline_keyboard: [
-                            [{text: 'Добавить комментарий', callback_data: `addComment:${requestId}`}],
+                            [{text: 'Ответить', callback_data: `addComment:${requestId}`}],
                             [{text: 'Посмотреть все комментарии', callback_data: `historyComment:${requestId}`}],
                             [{text: 'Закрыть запрос', callback_data: `closeAdminStatus:${requestId}`}]
                         ]

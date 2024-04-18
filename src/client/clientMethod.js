@@ -143,10 +143,10 @@ class ClientMethod {
     //Добавление запроса
     async addReq(chatId, text, type, addDesc, tgMethod, reqMethod, adminMethod, clientMethod, frMethod, surveyStates, adminChat){
         const client = await this.searchClientByTgId(chatId);
-        if (await reqMethod.searchActiveRequestOnTypeClient(client.id, type)){
+        /*if (await reqMethod.searchActiveRequestOnTypeClient(client.id, type)){
             await tgMethod.sendMessageWithRetry(chatId, `У вас уже есть активный запрос по данной теме. Дополнительную информацию по нему можно оставить в качестве комментария.`);
             surveyStates.delete(chatId);
-        } else {
+        } else {*/
             await tgMethod.sendMessageWithRetry(chatId, text);
             let description = addDesc;
             const addDescription = async (msg) =>{
@@ -214,7 +214,7 @@ class ClientMethod {
                 }
             }
             bot.on('message', addDescription);
-        }
+       // }
     }
 
     //Отображение запроса для клиента
@@ -267,11 +267,11 @@ class ClientMethod {
             const protectionReqHist = async (msg) => {
                 if (msg.chat.id === chatId) {
                     const request = await requestMethod.searchRequest(msg.text);
-                    if (request) {
+                    if (request && request.client_id === client.id.toString()) {
                         bot.removeListener('text', protectionReqHist);
                         await this.showClientRequest(chatId, request.id, request.date, request.type, request.description, request.is_active, request.communication_mode, tgMethod, requestMethod);
                     } else {
-                        await tgMethod.sendMessageWithRetry(chatId, `<i>Запроса с таким id нету.</i>`);
+                        await tgMethod.sendMessageWithRetry(chatId, `<i>Запроса с таким id нет.</i>`);
                     }
                 } else {
                     console.log("Ожидание нужного пользователя для просмотра истории.")
@@ -320,7 +320,7 @@ class ClientMethod {
         await tgMethod.sendMessageWithRetry(chatId, `<i>Теперь вы находитесь в режиме общения для запроса ${requestId}.</i>`)
     }
     //Меню Бухгалтерия Ориг
-    async accounting(chatId){
+    /*async accounting(chatId){
         await bot.sendMessage(chatId,
             `Вы хотите получить оригиналы документов в распечатанном виде?`, {
                 reply_markup: {
@@ -335,37 +335,38 @@ class ClientMethod {
                 }
             }
         )
-    }
+    }*/
 
     //Меню Бухгалтерия выбор документа
-    async accountingDoc(chatId, orig){
+    async accounting(chatId){
         await bot.sendMessage(chatId,
             `Выберите документ:`, {
                 reply_markup: {
                     inline_keyboard: [
                         [
-                            {text: 'Счета', callback_data: `accountingDoc:1:${orig}`}
+                            {text: 'Счета', callback_data: `accounting:1`}
                         ],
                         [
-                            {text: 'Активы', callback_data: `accountingDoc:2:${orig}`}
+                            {text: 'Акты', callback_data: `accounting:2`}
                         ],
                         [
-                            {text: 'Отчет комитенту', callback_data: `accountingDoc:3:${orig}`}
+                            {text: 'Отчет комитенту', callback_data: `accounting:3`}
                         ],
                         [
-                            {text: 'УПД', callback_data: `accountingDoc:4:${orig}`}
+                            {text: 'УПД', callback_data: `accounting:4`}
                         ],
                         [
-                            {text: 'Акты сверки', callback_data: `accountingDoc:5:${orig}`}
+                            {text: 'Акты сверки', callback_data: `accounting:5`}
                         ],
                         [
-                            {text: 'Яндекс Заправки', callback_data: `accountingDoc:6:${orig}`}
+                            {text: 'Яндекс Заправки', callback_data: `accounting:6`}
                         ]
                     ]
                 }
             }
         )
     }
+
 
     //Меню маркетинга
     async marketing(chatId){

@@ -58,37 +58,37 @@ bot.on('message', async msg => {
             } else if (text === 'Добавить клиента' && usersWithMenu.includes(chatId)) {                                                     //Добавить клиента
                 await adminMethod.addClientPhone(chatId, tgMethod, clientMethod, franchiseMethod);
 
-            } else if (text === 'Все активные запросы' && usersWithMenu.includes(chatId)){                                                  //Все активны запросы для админа
+            } else if (text === 'Активные запросы' && usersWithMenu.includes(chatId)){                                                  //Все активны запросы для админа
                 await adminMethod.adminRequest(chatId, 1, '', tgMethod, requestMethod);
 
             } else if (text === 'Завершенные запросы' && usersWithMenu.includes(chatId)){                                                   //Все закрытые запросы для админа
                 await adminMethod.adminRequest(chatId, 0, '', tgMethod, requestMethod);
 
-            } else if (text === 'Запросы службе поддержки' && usersWithMenu.includes(chatId)){                                              //Все актуальные запросы службе поддержки
+            } else if (text === 'Служба поддержки' && usersWithMenu.includes(chatId)){                                              //Все актуальные запросы службе поддержки
                 await adminMethod.adminRequest(chatId, 1, 'Служба поддержки', tgMethod, requestMethod);
 
-            } else if (text === 'Запросы по бухгалтерии' && usersWithMenu.includes(chatId)){                                                //Все актуальные запросы на Бухгалтерию
+            } else if (text === 'Бухгалтерия' && usersWithMenu.includes(chatId)){                                                //Все актуальные запросы на Бухгалтерию
                 await adminMethod.adminRequest(chatId, 1, 'Бухгалтерия', tgMethod, requestMethod);
 
-            } else if (text === 'Запросы маркетингу' && usersWithMenu.includes(chatId)){                                                    //Все актуальные запросы на маркетинг
+            } else if (text === 'Маркетинг' && usersWithMenu.includes(chatId)){                                                    //Все актуальные запросы на маркетинг
                 await adminMethod.adminRequest(chatId, 1, 'Маркетинг', tgMethod, requestMethod);
 
-            } else if (text === 'Запросы по МП' && usersWithMenu.includes(chatId)){                                                         //Все актуальные запросы по МП
+            } else if (text === 'МП' && usersWithMenu.includes(chatId)){                                                         //Все актуальные запросы по МП
                 await adminMethod.adminRequest(chatId, 1, 'Мобильное приложение', tgMethod, requestMethod);
 
-            } else if (text === 'Запросы по CW' && usersWithMenu.includes(chatId)){                                                         //Все актуальные запросы по CW
+            } else if (text === 'CW' && usersWithMenu.includes(chatId)){                                                         //Все актуальные запросы по CW
                 await adminMethod.adminRequest(chatId, 1, 'Car wash', tgMethod, requestMethod);
 
-            } else if (text === 'Запросы отделу сервиса' && usersWithMenu.includes(chatId)){                                                //Все актуальные запросы отделу сервиса
+            } else if (text === 'Отдел сервиса' && usersWithMenu.includes(chatId)){                                                //Все актуальные запросы отделу сервиса
                 await adminMethod.adminRequest(chatId, 1, 'Отдел сервиса', tgMethod, requestMethod);
 
-            } else if (text === 'Запросы отделу продаж' && usersWithMenu.includes(chatId)){                                                 //Все актуальные запросы отделу продаж
+            } else if (text === 'Отдел продаж' && usersWithMenu.includes(chatId)){                                                 //Все актуальные запросы отделу продаж
                 await adminMethod.adminRequest(chatId, 1, 'Отдел продаж', tgMethod, requestMethod);
 
-            } else if (text === 'Запросы по договорам' && usersWithMenu.includes(chatId)){                                                  //Все актуальные запросы по Договорам
+            } else if (text === 'Договоры' && usersWithMenu.includes(chatId)){                                                  //Все актуальные запросы по Договорам
                 await adminMethod.adminRequest(chatId, 1, 'Договоры', tgMethod, requestMethod);
 
-            } else if (text === 'Запросы по ЯЗ' && usersWithMenu.includes(chatId)){                                                         //Все актуальные запросы по Договорам
+            } else if (text === 'ЯЗ' && usersWithMenu.includes(chatId)){                                                         //Все актуальные запросы по Договорам
                 await adminMethod.adminRequest(chatId, 1, 'Яндекс Заправки', tgMethod, requestMethod);
 
             } else if (text === '✏ Служба поддержки') {                                                                                     //Создать запрос
@@ -124,13 +124,13 @@ bot.on('message', async msg => {
             } else if (text === '📱 Мобильное приложение'){                                                                                  //Меню мобильного приложения
                 await clientMethod.phoneMenu(chatId);
 
-            } else if (text === 'Сделать рассылку всем' && usersWithMenu.includes(chatId)){                                                 //Сделать рассылку все клиентам
+            } else if (text === 'Сделать рассылку' && usersWithMenu.includes(chatId)){                                                 //Сделать рассылку все клиентам
                 await adminMethod.makeNewsletterFrAll(usersWithMenu[0], clientMethod, tgMethod);
 
-            } else if (text === 'Сделать рассылку франшизе' && usersWithMenu.includes(chatId)){                                             //Сделать рассылку франшизе
+            }/* else if (text === 'Сделать рассылку франшизе' && usersWithMenu.includes(chatId)){                                             //Сделать рассылку франшизе
                 await adminMethod.makeNewsletterFr(usersWithMenu[0], clientMethod, tgMethod, franchiseMethod);
 
-            } else if (chatId === usersWithMenu[0] && tgMethod.isNumeric(text)){                                                            //Поиск конкретного запроса по id для админа
+            }*/ else if (chatId === usersWithMenu[0] && tgMethod.isNumeric(text)){                                                            //Поиск конкретного запроса по id для админа
                 await adminMethod.searchRequestById(chatId, text, tgMethod, clientMethod, franchiseMethod, requestMethod);
 
             } else if (chatId !== usersWithMenu[0] && !surveyStates.get(chatId) && !tgMethod.isNumeric(text)) {                             //Режим свободного комментария для клиента
@@ -163,19 +163,12 @@ bot.on('callback_query', async (callbackQuery) => {
 
     } else if (action[0] === 'marketingNo') {                                                                                               //Маркетинг выбор Нет
         surveyStates.set(chatId, true);
-        await clientMethod.shortRequest(chatId, 'Маркетинг', `Что Вас интересует?`, '', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
+        await clientMethod.addReq(chatId, `Что Вас интересует?`, 'Маркетинг', '', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
         await bot.deleteMessage(chatId, messId);
 
-    } else if (action[0] === 'accounting') {                                                                                                //Бухгалтерия - определение оригинальности документа
-        await clientMethod.accountingDoc(chatId, action[1]);
-        await bot.deleteMessage(chatId, messId);
-
-    } else if (action[0] === 'accountingDoc') {                                                                                             //Короткие запросы по Яндекс Заправкам
+    } else if (action[0] === 'accounting') {                                                                                             //Короткие запросы по Яндекс Заправкам
         surveyStates.set(chatId, true);
-        let addDesc = 'Оригинал документов. ';
-        if (action[2] === '0'){
-            addDesc = 'Копии документов. ';
-        }
+        let addDesc = ''
         if (action[1] === '1'){
             addDesc = addDesc + 'Счета. ';
         } else if (action[1] === '2'){
@@ -189,9 +182,19 @@ bot.on('callback_query', async (callbackQuery) => {
         } else if (action[1] === '6'){
             addDesc = addDesc + 'Яндекс Заправки. ';
         }
-        await clientMethod.shortRequest(chatId, 'Бухгалтерия', `Укажите год и месяц (при необходимости укажите временной период):`,
-            addDesc + 'Период: ', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
-        await bot.deleteMessage(chatId, messId);
+        await tgMethod.sendMessageWithRetry(chatId, 'По какому договору выгрузить документ?');
+        const addText = async (msg) =>{
+            if (msg.chat.id === chatId) {
+                bot.removeListener('message', addText);
+                addDesc = addDesc + msg.text;
+                await clientMethod.addReq(chatId,`Укажите год и месяц (при необходимости укажите временной период):`, 'Бухгалтерия',
+                    addDesc + '. Период: ', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
+                await bot.deleteMessage(chatId, messId);
+            } else {
+                console.log("Ожидание нужного пользователя для ввода описания.");
+            }
+        }
+        bot.on('message', addText);
 
     } else if (action[0] === 'mobReq') {                                                                                                    //Запрос по мп
         surveyStates.set(chatId, true);
@@ -201,7 +204,7 @@ bot.on('callback_query', async (callbackQuery) => {
 
     } else if (action[0] === 'claimClient') {                                                                                               //Запрос - жалоба клиента
         surveyStates.set(chatId, true);
-        await clientMethod.addReq(chatId, `На что жалуется клиент? Укажите номер карты/телефон. Мы постараемся Вам помочь`,
+        await clientMethod.addReq(chatId, `На что жалуется клиент? Укажите номер карты или мобильный номер телефона. Мы постараемся Вам помочь.`,
             'Мобильное приложение', 'Жалоба клиента. ', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
         await bot.deleteMessage(chatId, messId);
 
@@ -223,31 +226,31 @@ bot.on('callback_query', async (callbackQuery) => {
 
     } else if (action[0] === 'manual') {                                                                                                    //Инструкции по CW
         surveyStates.set(chatId, true);
-        await clientMethod.shortRequest(chatId, 'Car wash. Инструкции', `По какому разделу Вы хотели бы просмотреть инструкцию?`, 'Раздел CW, по которому требуется инструкция. ', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
+        await clientMethod.addReq(chatId, `По какому разделу Вы хотели бы просмотреть инструкцию?`, 'Car wash. Инструкции', 'Раздел CW, по которому требуется инструкция. ', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
         await bot.deleteMessage(chatId, messId);
 
     } else if (action[0] === 'registrationForTraining') {                                                                                   //Обучение по CW
         surveyStates.set(chatId, true);
-        await clientMethod.shortRequest(chatId, 'Car wash. Обучение', `Если у Вас возникают сложности в программе Car Wash – предлагаем Вам записаться на обучение. Обучение проводят ведущие специалисты МОЙ-КА!DS в формате Zoom (онлайн). По окончанию обучения у Вас остается видеозапись, которую Вы всегда сможете просмотреть. Для оформления заявки на обучение, укажите какие разделы Вы хотели бы изучить. Специалисты свяжутся с Вами и подберут удобную дату и время.`,
-            'Данные по заявке на обучение. ', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
+        await clientMethod.addReq(chatId, `Если у Вас возникают сложности в программе Car Wash – предлагаем Вам записаться на обучение. Обучение проводят ведущие специалисты МОЙ-КА!DS в формате Zoom (онлайн). По окончанию обучения у Вас остается видеозапись, которую Вы всегда сможете просмотреть. Для оформления заявки на обучение, укажите какие разделы Вы хотели бы изучить. Специалисты свяжутся с Вами и подберут удобную дату и время.`,
+            'Car wash. Обучение', 'Данные по заявке на обучение. ', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
         await bot.deleteMessage(chatId, messId);
 
     } else if (action[0] === 'sdAutochemistry') {                                                                                           //Обучение по CW
         surveyStates.set(chatId, true);
-        await clientMethod.shortRequest(chatId, 'Отдел продаж', `Укажите название Автохимии, объем канистры. Когда Вы хотите забрать?`,
-            'Автохимия. ', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
+        await clientMethod.addReq(chatId, `Укажите название Автохимии, количество и объем канистр, дату доставки.`,
+            'Отдел продаж','Автохимия. ', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
         await bot.deleteMessage(chatId, messId);
 
     } else if (action[0] === 'sdEquipment') {                                                                                               //Обучение по CW
         surveyStates.set(chatId, true);
-        await clientMethod.shortRequest(chatId, 'Отдел продаж', `Укажите, какие запчасти/оборудование Вам нужно?`,
-            'Оборудование. ', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
+        await clientMethod.addReq(chatId,  `Укажите, какие запчасти/оборудование Вам нужно?`,
+            'Отдел продаж','Оборудование. ', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
         await bot.deleteMessage(chatId, messId);
 
     } else if (action[0] === 'sdOther') {                                                                                                   //Обучение по CW
         surveyStates.set(chatId, true);
-        await clientMethod.shortRequest(chatId, 'Отдел продаж', `Что Вы хотите купить?`,
-            'Другое. ', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
+        await clientMethod.addReq(chatId,  `Что Вы хотите купить?`,
+            'Отдел продаж','Другое. ', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
         await bot.deleteMessage(chatId, messId);
 
     } else if (action[0] === 'contract') {                                                                                                  //Запрос по Договору
@@ -285,7 +288,7 @@ bot.on('callback_query', async (callbackQuery) => {
         if (action[1] === '2'){
             addDesc = 'УПД';
         }
-        await clientMethod.shortRequest(chatId, 'Яндекс Заправки. ' + addDesc, `Укажите год и месяц:`,
+        await clientMethod.addReq(chatId,  `Укажите год и месяц:`,'Яндекс Заправки. ' + addDesc,
             'Год и месяц: ', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
         await bot.deleteMessage(chatId, messId);
 
