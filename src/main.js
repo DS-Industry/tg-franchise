@@ -333,6 +333,7 @@ bot.on('callback_query', async (callbackQuery) => {
         await adminMethod.sendCommentAdmin(action[1], usersWithMenu[0], 1, clientMethod, requestMethod, tgMethod);
 
     } else if (action[0] === 'deleteComment') {                                                                                              //Удаление отзыва
+        surveyStates.set(chatId, true);
         const comment = await requestMethod.searchComment(action[1]);
         const addDesc = 'Удалить отзыв. ' + comment.text + '. Причина: ';
         await clientMethod.addReq(chatId, `Объясните, почему Вы хотите удалить данный отзыв?`,
