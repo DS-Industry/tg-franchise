@@ -9,22 +9,27 @@ class ClientMethod {
                 reply_markup: {
                     keyboard: [
                         [
-                            '📘 Бухгалтерия',
-                            '⛲ Яндекс Заправки',
-                            '⛲ Договоры',
+                            'Бухгалтерия',
+                            'Яндекс Заправки',
                         ],
                         [
-                            '⛲ Отдел сервиса',
-                            '⛲ Отдел продаж',
-                            '⛲ Car wash',
+                            'Отдел сервиса',
+                            'Отдел продаж',
                         ],
                         [
-                            '📱 Мобильное приложение',
-                            '⛲ Маркетинг',
-                            '✏ Служба поддержки',
+                            'Мобильное приложение',
+                            'Маркетинг',
                         ],
                         [
-                            '📋 Посмотреть предыдущие запросы'
+                            'Служба поддержки',
+                            'Отзывы',
+                        ],
+                        [
+                            'Договоры',
+                            'Car wash',
+                        ],
+                        [
+                            'Посмотреть предыдущие запросы'
                         ]
                     ],
                     resize_keyboard: true
@@ -518,6 +523,48 @@ class ClientMethod {
         )
     }
 
+    //Меню Отзывов
+    async commentMenu(chatId){
+        await bot.sendMessage(chatId,
+            `Выберите ГЕО-сервис, на котором Вы хотите посмотреть отзывы:`, {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {text: 'Яндекс Карты', callback_data: `comment:1`}
+                        ],
+                        [
+                            {text: '2GIS', callback_data: `comment:2`}
+                        ],
+                        [
+                            {text: 'Google Карты', callback_data: `comment:3`}
+                        ],
+                    ]
+                }
+            }
+        )
+    }
+
+    //Меню Отзывов
+    async commentTypeMenu(chatId, serviceId){
+        await bot.sendMessage(chatId,
+            `Какие отзывы Вы хотите посмотреть:`, {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {text: 'Положительные', callback_data: `commentType:${serviceId}:1`}
+                        ],
+                        [
+                            {text: 'Отрицательные', callback_data: `commentType:${serviceId}:2`}
+                        ],
+                        [
+                            {text: 'Все', callback_data: `commentType:${serviceId}:3`}
+                        ],
+                    ]
+                }
+            }
+        )
+    }
+
     //Маркетинг при выборе Да
     async marketingYes(chatId, type, tgMethod, reqMethod, adminMethod, clientMethod, frMethod, adminChat){
         const client = await this.searchClientByTgId(chatId);
@@ -529,9 +576,9 @@ class ClientMethod {
         const request = await reqMethod.addRequest(client.id, currentDate, type, description, 1, 0);
 
         if (currentHour >= 8 && currentHour < 17) {
-            await tgMethod.sendMessageWithRetry(chatId, `Ваш запрос создан и направлен админестратору, ожидайте!\nМы ответим вам в ближайшее время☺`);
+            await tgMethod.sendMessageWithRetry(chatId, `Ваш запрос создан и направлен администратору, ожидайте!\nМы ответим вам в ближайшее время☺`);
         } else {
-            await tgMethod.sendMessageWithRetry(chatId, `Спасибо за вашу заявку!\nВ данный момент рабочий день админестраторов закончен, они обязательно ответят вам завтра, ожидайте☺`);
+            await tgMethod.sendMessageWithRetry(chatId, `Спасибо за вашу заявку!\nВ данный момент рабочий день администраторов закончен, они обязательно ответят вам завтра, ожидайте☺`);
         }
 
                 await adminMethod.showAdminRequest(adminChat, client.id, request.id, currentDate, type, description, 1, tgMethod, clientMethod, frMethod, reqMethod);

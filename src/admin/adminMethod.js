@@ -23,6 +23,10 @@ class AdminMethod {
                             'Служба поддержки'
                         ],
                         [
+                            'Отзывы',
+                            'Удалить отзыв',
+                        ],
+                        [
                             'Активные запросы',
                             'Завершенные запросы',
                         ],
@@ -163,13 +167,13 @@ class AdminMethod {
     }
 
     //Отправка комменатрия админом
-    async sendCommentAdmin(requestId, chatId, clientMethod, requestMethod, tgMethod){
+    async sendCommentAdmin(requestId, chatId, chSendComment, clientMethod, requestMethod, tgMethod){
         const request = await requestMethod.searchRequest(requestId);
         const client = await clientMethod.searchClient(request.client_id);
         await tgMethod.sendMessageWithRetry(chatId, "Напишите комментарий:");
         const addCom = async (msg) =>{
             if (msg.chat.id === chatId) {
-                await requestMethod.sendComment(request, msg, "Администратор", client.tg_client_id, tgMethod);
+                await requestMethod.sendComment(request, msg, "Администратор", client.tg_client_id, chSendComment, tgMethod);
                 bot.removeListener('message', addCom);
                 await tgMethod.sendMessageWithRetry(chatId, "Комментарий добавлен!");
             } else {
@@ -186,7 +190,7 @@ class AdminMethod {
         await tgMethod.sendMessageWithRetry(chatId, "Добавьте ответ:");
         const addOth = async (msg) =>{
             if (msg.chat.id === chatId) {
-                await requestMethod.sendComment(request, msg, "Администратор", client.tg_client_id, tgMethod);
+                await requestMethod.sendComment(request, msg, "Администратор", client.tg_client_id, 0, tgMethod);
                 bot.removeListener('message', addOth);
                 await tgMethod.sendMessageWithRetry(chatId, "Ответ добавлен!");
                 await requestMethod.closeRequest(requestId);
@@ -224,7 +228,19 @@ class AdminMethod {
                     }
                 }
             )
-        }*/ else {
+        }*/ else if(type === 'Отзывы'){
+            await bot.sendMessage(chatId,
+                `Запрос ${requestId}:`, {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [{text: 'Загрузить отзыв', callback_data: `sendComment:${requestId}`}],
+                            [{text: 'Посмотреть все комментарии', callback_data: `historyComment:${requestId}`}],
+                            [{text: 'Закрыть запрос', callback_data: `closeAdminStatus:${requestId}`}]
+                        ]
+                    }
+                }
+            )
+        } else {
             await bot.sendMessage(chatId,
                 `Запрос ${requestId}:`, {
                     reply_markup: {
@@ -252,7 +268,7 @@ class AdminMethod {
         await tgMethod.sendMessageWithRetry(chatId, "Запрос закрыт.");
         const request = await requestMethod.searchRequest(requestId);
         const client = await clientMethod.searchClient(request.client_id);
-        await tgMethod.sendMessageWithRetry(client.tg_client_id, `<i>Администратор перевел обращение ${requestId} в статус завершенных. Режим общения закрыт для данного запроса.</i>`);
+        await tgMethod.sendMessageWithRetry(client.tg_client_id, `<i>Запрос ${requestId} закрыт.</i>`);
     }
 
     //Рассылка

@@ -154,7 +154,7 @@ class RequestMethod {
     }
 
     //Дополнение к комментарию на стороне отвечающего
-    async sendCommentAnswer(chatId, requestId, commentId, text, tgMethod, sender){
+    async sendCommentAnswer(chatId, requestId, commentId, text, chSendComment, tgMethod, sender){
         if(sender === 'Клиент') {
             await tgMethod.sendMessageWithRetry(chatId, `<b>${sender} добавил комментарий к запросу ${requestId}:</b>\n <i>${text}</i>`);
             const media = await this.searchMedia(commentId, "comment");
@@ -173,16 +173,30 @@ class RequestMethod {
                 }
             )
         } else {
-            await tgMethod.sendMessageWithRetry(chatId, text);
-            const media = await this.searchMedia(commentId, "comment");
-            if (media) {
-                await this.sendMedia(chatId, media.url, media.filling);
+            if(chSendComment === 1){
+                await bot.sendMessage(chatId,
+                    `${text}`, {
+                        reply_markup: {
+                            inline_keyboard: [
+                                [
+                                    {text: 'Хочу удалить отзыв', callback_data: `deleteComment:${commentId}`}
+                                ]
+                            ]
+                        }
+                    }
+                )
+            } else {
+                await tgMethod.sendMessageWithRetry(chatId, text);
+                const media = await this.searchMedia(commentId, "comment");
+                if (media) {
+                    await this.sendMedia(chatId, media.url, media.filling);
+                }
             }
         }
     }
 
     //Отправка комментария
-    async sendComment(request, msg, sender, addressee, tgMethod){
+    async sendComment(request, msg, sender, addressee, chSendComment, tgMethod){
         let textMsg = msg.text;
         if (msg.photo && msg.photo.length > 0) {
             if (msg.caption !== undefined) {
@@ -221,7 +235,25 @@ class RequestMethod {
         } else if (msg.voice) {
             await this.addMedia(comment.id, 'comment', msg.voice.file_id, 'voice');
         }
-        await this.sendCommentAnswer(addressee, request.id, comment.id, textMsg, tgMethod, sender)
+        await this.sendCommentAnswer(addressee, request.id, comment.id, textMsg, chSendComment, tgMethod, sender)
+    }
+
+    //Поиск комментария
+    async searchComment(commentId){
+        return new Promise( async (resolve) => {
+            const sql = 'SELECT * FROM FRANCHISE_MESSAGE WHERE ID = $1';
+            await connection.query(sql, [commentId], async (err, result) => {
+                if (err) {
+                    console.log(err);
+                }else {
+                    if (result.rows) {
+                        resolve(result.rows[0]);
+                    } else {
+                        resolve(null);
+                    }
+                }
+            });
+        });
     }
 
     //История комментариев по запросу

@@ -88,40 +88,51 @@ bot.on('message', async msg => {
             } else if (text === 'Договоры' && usersWithMenu.includes(chatId)){                                                  //Все актуальные запросы по Договорам
                 await adminMethod.adminRequest(chatId, 1, 'Договоры', tgMethod, requestMethod);
 
+            } else if (text === 'Отзывы' && usersWithMenu.includes(chatId)){                                                  //Все актуальные запросы по Договорам
+                await adminMethod.adminRequest(chatId, 1, 'Отзывы', tgMethod, requestMethod);
+
+            } else if (text === 'Удалить отзыв' && usersWithMenu.includes(chatId)){                                                  //Все актуальные запросы по Договорам
+                await adminMethod.adminRequest(chatId, 1, 'Удалить отзыв', tgMethod, requestMethod);
+
             } else if (text === 'ЯЗ' && usersWithMenu.includes(chatId)){                                                         //Все актуальные запросы по Договорам
                 await adminMethod.adminRequest(chatId, 1, 'Яндекс Заправки', tgMethod, requestMethod);
 
-            } else if (text === '✏ Служба поддержки') {                                                                                     //Создать запрос
+
+
+            } else if (text === 'Служба поддержки') {                                                                                     //Создать запрос
                 surveyStates.set(chatId, true);
                 await clientMethod.addReq(chatId, `Если Вы не смогли найти ответ на свой вопрос – напишите нашему специалисту. Подробно опишите проблему или интересующий вас вопрос, при необходимости прикрепите фотографию.`,
                     'Служба поддержки', '', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
 
-            } else if (text === '📋 Посмотреть предыдущие запросы'){                                                                         //Просмотр всех предыдущих запрсов для данного пользователя
+            } else if (text === 'Посмотреть предыдущие запросы'){                                                                         //Просмотр всех предыдущих запрсов для данного пользователя
                 await clientMethod.viewRequestHistory(chatId, requestMethod, tgMethod);
 
-            } else if (text === '📘 Бухгалтерия'){                                                                                           //Создание запроса на документы
+            } else if (text === 'Бухгалтерия'){                                                                                           //Создание запроса на документы
                 await clientMethod.accounting(chatId);
 
-            } else if (text === '⛲ Отдел продаж'){                                                                                          //Меню Отдел продаж
+            } else if (text === 'Отдел продаж'){                                                                                          //Меню Отдел продаж
                 await clientMethod.sdMenu(chatId);
 
-            } else if (text === '⛲ Договоры'){                                                                                              //Меню Договоров
+            } else if (text === 'Договоры'){                                                                                              //Меню Договоров
                 await clientMethod.contractMenu(chatId);
 
-            } else if (text === '⛲ Яндекс Заправки'){                                                                                       //Меню Яндекс заправок
+            } else if (text === 'Яндекс Заправки'){                                                                                       //Меню Яндекс заправок
                 await clientMethod.yaMenu(chatId);
 
-            } else if (text === '⛲ Маркетинг'){                                                                                             //Меню маркетинга
+            } else if (text === 'Маркетинг'){                                                                                             //Меню маркетинга
                 await clientMethod.marketing(chatId);
 
-            } else if (text === '⛲ Car wash'){                                                                                              //Меню carWash
+            } else if (text === 'Car wash'){                                                                                              //Меню carWash
                 await clientMethod.cwMenu(chatId);
 
-            } else if (text === '⛲ Отдел сервиса'){                                                                                         //Меню отдела сервиса
+            } else if (text === 'Отзывы'){                                                                                              //Меню отзывов
+                await clientMethod.commentMenu(chatId);
+
+            } else if (text === 'Отдел сервиса'){                                                                                         //Меню отдела сервиса
                 surveyStates.set(chatId, true);
             await clientMethod.addReq(chatId, `Чем я могу Вам помочь?`, 'Отдел сервиса', '', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
 
-            } else if (text === '📱 Мобильное приложение'){                                                                                  //Меню мобильного приложения
+            } else if (text === 'Мобильное приложение'){                                                                                  //Меню мобильного приложения
                 await clientMethod.phoneMenu(chatId);
 
             } else if (text === 'Сделать рассылку' && usersWithMenu.includes(chatId)){                                                 //Сделать рассылку все клиентам
@@ -137,7 +148,7 @@ bot.on('message', async msg => {
                 const client = await clientMethod.searchClientByTgId(chatId)
                 const comReq = await requestMethod.searchComMod(client.id);
                 if (comReq) {
-                    await requestMethod.sendComment(comReq, msg, "Клиент", usersWithMenu[0], tgMethod);
+                    await requestMethod.sendComment(comReq, msg, "Клиент", usersWithMenu[0], 0, tgMethod);
                 } else {
                     await tgMethod.sendMessageWithRetry(chatId, `<i>В данный момент вы не находитесь в режиме общения. Создайте новый запрос.</i>`);
                 }
@@ -172,7 +183,7 @@ bot.on('callback_query', async (callbackQuery) => {
         if (action[1] === '1'){
             addDesc = addDesc + 'Счета. ';
         } else if (action[1] === '2'){
-            addDesc = addDesc + 'Активы. ';
+            addDesc = addDesc + 'Акты. ';
         } else if (action[1] === '3'){
             addDesc = addDesc + 'Отчет комитенту. ';
         } else if (action[1] === '4'){
@@ -267,6 +278,29 @@ bot.on('callback_query', async (callbackQuery) => {
             'Договоры', addDesc, tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
         await bot.deleteMessage(chatId, messId);
 
+    } else if (action[0] === 'comment') {                                                                                                   //Выбор типа отзыва
+        await clientMethod.commentTypeMenu(chatId, action[1]);
+        await bot.deleteMessage(chatId, messId);
+
+    } else if (action[0] === 'commentType') {                                                                                               //Создание запроса по отзывам
+        surveyStates.set(chatId, true);
+        let addDesc = 'Яндекс Карты. ';
+        if (action[1] === '2'){
+            addDesc = '2GIS. ';
+        } else if (action[1] === '3'){
+            addDesc = 'Google Карты. ';
+        }
+        if(action[2] === '1'){
+            addDesc = addDesc + 'Положительные отзывы. ';
+        } else if (action[2] === '2'){
+            addDesc = 'Отрицательные отзывы. ';
+        } else if (action[2] === '3'){
+            addDesc = 'Все отзывы. ';
+        }
+        await clientMethod.addReq(chatId, `За какой период Вы хотите посмотреть отзывы?`,
+            'Отзывы', addDesc + 'Период: ', tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
+        await bot.deleteMessage(chatId, messId);
+
     } else if (action[0] === 'yaReq') {                                                                                                     //Запрос по Яндекс Заправкам
         surveyStates.set(chatId, true);
         let text = `Какой у Вас вопрос?`;
@@ -293,7 +327,17 @@ bot.on('callback_query', async (callbackQuery) => {
         await bot.deleteMessage(chatId, messId);
 
     } else if (action[0] === 'addComment') {                                                                                                //Добавление комментария к запросу
-        await adminMethod.sendCommentAdmin(action[1], usersWithMenu[0], clientMethod, requestMethod, tgMethod);
+        await adminMethod.sendCommentAdmin(action[1], usersWithMenu[0], 0, clientMethod, requestMethod, tgMethod);
+
+    } else if (action[0] === 'sendComment') {                                                                                               //Добавление отзыва
+        await adminMethod.sendCommentAdmin(action[1], usersWithMenu[0], 1, clientMethod, requestMethod, tgMethod);
+
+    } else if (action[0] === 'deleteComment') {                                                                                              //Удаление отзыва
+        const comment = await requestMethod.searchComment(action[1]);
+        const addDesc = 'Удалить отзыв. ' + comment.text + '. Причина: ';
+        await clientMethod.addReq(chatId, `Объясните, почему Вы хотите удалить данный отзыв?`,
+            'Удалить отзыв', addDesc, tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
+        await bot.deleteMessage(chatId, messId);
 
     } else if (action[0] === 'closeAdminStatus') {                                                                                          //Изменение статуса запроса для админа на "Закрыто"
         await adminMethod.closeReq(action[1], usersWithMenu[0], tgMethod, clientMethod, requestMethod);
