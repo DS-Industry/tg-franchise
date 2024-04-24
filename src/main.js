@@ -337,7 +337,7 @@ bot.on('callback_query', async (callbackQuery) => {
         const comment = await requestMethod.searchComment(action[1]);
         const addDesc = 'Удалить отзыв. ' + comment.text + '. Причина: ';
         await clientMethod.addReq(chatId, `Объясните, почему Вы хотите удалить данный отзыв?`,
-            'Удалить отзыв', addDesc, tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
+            'Отзывы', addDesc, tgMethod, requestMethod, adminMethod, clientMethod, franchiseMethod, surveyStates, usersWithMenu[0]);
         await bot.deleteMessage(chatId, messId);
 
     } else if (action[0] === 'closeAdminStatus') {                                                                                          //Изменение статуса запроса для админа на "Закрыто"
