@@ -119,10 +119,10 @@ bot.on('message', async msg => {
             } else if (text === 'Яндекс Заправки'){                                                                                       //Меню Яндекс заправок
                 await clientMethod.yaMenu(chatId);
 
-            } else if (text === 'Маркетинг'){                                                                                             //Меню маркетинга
+            } else if (text === 'Акции, скидки'){                                                                                             //Меню маркетинга
                 await clientMethod.marketing(chatId);
 
-            } else if (text === 'Car wash'){                                                                                              //Меню carWash
+            } else if (text === 'Car Wash'){                                                                                              //Меню carWash
                 await clientMethod.cwMenu(chatId);
 
             } else if (text === 'Отзывы'){                                                                                              //Меню отзывов
