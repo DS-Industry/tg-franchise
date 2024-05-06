@@ -301,7 +301,7 @@ class ClientMethod {
                 } else {
                     const client = await this.searchClientByPhone(phone);
                     if (client){
-                        await this.menuMainFixed(msg.chat.id, 'Клиентский чат. Меню закрепелено');
+                        await this.menuMainFixed(msg.chat.id, 'Клиентский чат. Меню прикрепленено к окну для ввода');
                         await this.addTgItClient(chatId, phone);
                     } else {
                         await tgMethod.sendMessageWithRetry(chatId, "Франшиза найдена не найдена. Свяжитесь с офисом для добавления ваших контактов.");
