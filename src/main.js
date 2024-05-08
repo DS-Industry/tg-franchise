@@ -28,12 +28,12 @@ bot.on("polling_error", err => console.log(err.data.error.message));
 const commands = [
     {
         command: "start",
-        description: "Запуск бота"
+        description: "Запустить чат"
     },
     {
 
         command: "help",
-        description: "Раздел помощи"
+        description: "Как пользоваться чатом?"
 
     },
 ]
@@ -49,8 +49,11 @@ bot.on('message', async msg => {
                 if (usersWithMenu.includes(chatId)) {
                      await adminMethod.menuAdminMainFixed(chatId, 'Админский чат');
                 } else {
-                    await clientMethod.menuMainFixed(chatId, 'Клиентский чат')
+                    await clientMethod.menuMainFixed(chatId, 'Добро пожаловать в чат Франшиза МОЙ-КА!DS. Вы можете задать нам вопрос с помощью меню, закрепленного на экране.')
                 }
+
+            } else if (text === '/help') {
+                await tgMethod.sendMessageWithRetry(chatId, 'Вы находитесь в чате Франшиза МОЙ-КА!DS. Чат создан для взаимодействия в рамках франшизы. Для того, чтобы задать вопрос нажмите кнопку «Запустить чат». Далее выберите интересующий Вас раздел из Меню и следуйте инструкциям. Ожидайте ответа от менеджера.')
 
             } else if (text === 'Добавить франшизу' && usersWithMenu.includes(chatId)) {                                                    //Добавить франшизу
                 await adminMethod.addFrName(chatId, tgMethod, franchiseMethod);
@@ -154,9 +157,14 @@ bot.on('message', async msg => {
                 }
             }
 
-        } else if(!processReq.get(msg.chat.id)) {                                                                                           //Проверка на нахождение в режиме регистрации
-            processReq.set(msg.chat.id, true);
-            await clientMethod.registration(msg.chat.id, tgMethod, franchiseMethod, processReq);
+        } else if(!processReq.get(chatId)) {                                                                                           //Проверка на нахождение в режиме регистрации
+            if (text === '/help') {
+                await tgMethod.sendMessageWithRetry(chatId, 'Вы находитесь в чате Франшиза МОЙ-КА!DS. Чат создан для взаимодействия в рамках франшизы. Для того, чтобы задать вопрос нажмите кнопку «Запустить чат». Далее выберите интересующий Вас раздел из Меню и следуйте инструкциям. Ожидайте ответа от менеджера.')
+
+            } else {
+                processReq.set(msg.chat.id, true);
+                await clientMethod.registration(msg.chat.id, tgMethod, franchiseMethod, processReq);
+            }
         }
     } catch(error) {
         console.log(error);
@@ -342,6 +350,7 @@ bot.on('callback_query', async (callbackQuery) => {
 
     } else if (action[0] === 'closeAdminStatus') {                                                                                          //Изменение статуса запроса для админа на "Закрыто"
         await adminMethod.closeReq(action[1], usersWithMenu[0], tgMethod, clientMethod, requestMethod);
+        await bot.deleteMessage(chatId, messId);
 
     } else if (action[0] === 'historyComment') {                                                                                            //Просмотр истории комментариев по данному запросу
         await requestMethod.viewHistoryComment(chatId, action[1], tgMethod);

@@ -292,7 +292,7 @@ class ClientMethod {
 
     //Регистрация в системе
     async registration(chatId, tgMethod, frMethod, processReq){
-        await tgMethod.sendMessageWithRetry(chatId, "Клиент не обнаружен. Нужно ввести телефон. (без + и начиная с 7)");
+        await tgMethod.sendMessageWithRetry(chatId, "Добрый день! Введите мобильный номер телефона для регистрации. Без «+» и начиная с «7»");
         const phoneReg = async (msg) =>{
             if (msg.chat.id === chatId) {
                 const phone = msg.text;
@@ -301,7 +301,7 @@ class ClientMethod {
                 } else {
                     const client = await this.searchClientByPhone(phone);
                     if (client){
-                        await this.menuMainFixed(msg.chat.id, 'Клиентский чат. Меню прикрепленено к окну для ввода');
+                        await this.menuMainFixed(msg.chat.id, 'Добро пожаловать в чат Франшиза МОЙ-КА!DS. Вы можете задать нам вопрос с помощью меню, закрепленного на экране.');
                         await this.addTgItClient(chatId, phone);
                     } else {
                         await tgMethod.sendMessageWithRetry(chatId, "Франшиза найдена не найдена. Свяжитесь с офисом для добавления ваших контактов.");
