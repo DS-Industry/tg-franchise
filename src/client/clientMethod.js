@@ -304,7 +304,7 @@ class ClientMethod {
                         await this.menuMainFixed(msg.chat.id, 'Добро пожаловать в чат Франшиза МОЙ-КА!DS. Вы можете задать нам вопрос с помощью меню, закрепленного на экране.');
                         await this.addTgItClient(chatId, phone);
                     } else {
-                        await tgMethod.sendMessageWithRetry(chatId, "Франшиза найдена не найдена. Свяжитесь с офисом для добавления ваших контактов.");
+                        await tgMethod.sendMessageWithRetry(chatId, "Франшиза не найдена. Свяжитесь с офисом для добавления ваших контактов.");
                     }
                     processReq.delete(chatId);
                     bot.removeListener('text', phoneReg);
